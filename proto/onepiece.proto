@@ -1,0 +1,93 @@
+syntax = "proto3";
+
+package onepiece;
+
+service CharacterService {
+  rpc CreateCharacter (CreateCharacterRequest) returns (CharacterResponse);
+  rpc GetCharacter (GetCharacterRequest) returns (CharacterResponse);
+  rpc ListCharacters (ListCharactersRequest) returns (ListCharactersResponse);
+  rpc SearchCharacters (SearchCharactersRequest) returns (stream CharacterResponse);
+}
+
+service CrewService {
+  rpc CreateCrew (CrewRequest) returns (CrewResponse);
+  rpc GetCrew (GetCrewRequest) returns (CrewResponse);
+  rpc ListCrews (ListCrewsRequest) returns (ListCrewsResponse);
+}
+
+service DevilFruitService {
+  rpc CreateDevilFruit (DevilFruitRequest) returns (DevilFruitResponse);
+  rpc GetDevilFruit (GetDevilFruitRequest) returns (DevilFruitResponse);
+  rpc ListDevilFruits (ListDevilFruitsRequest) returns (ListDevilFruitsResponse);
+}
+
+/* ==== Messages ==== */
+
+message Character {
+  string id = 1;
+  string name = 2;
+  int64 bounty = 3;
+  string crew_id = 4;
+  string devil_fruit_id = 5;
+  repeated string roles = 6;
+}
+
+message Crew {
+  string id = 1;
+  string name = 2;
+  string ship_name = 3;
+  string affiliation = 4;
+}
+
+enum DevilFruitType {
+  PARAMECIA = 0;
+  LOGIA = 1;
+  ZOAN = 2;
+}
+
+message DevilFruit {
+  string id = 1;
+  string name = 2;
+  DevilFruitType type = 3;
+  string description = 4;
+}
+
+/* ==== Requests & Responses ==== */
+
+message CreateCharacterRequest {
+  string name = 1;
+  int64 bounty = 2;
+  string crew_id = 3;
+  string devil_fruit_id = 4;
+  repeated string roles = 5;
+}
+message GetCharacterRequest { string id = 1; }
+message ListCharactersRequest {
+  int32 limit = 1;
+  string cursor = 2;
+}
+message SearchCharactersRequest { string query = 1; }
+message CharacterResponse { Character character = 1; }
+message ListCharactersResponse { repeated Character characters = 1; }
+
+message CrewRequest {
+  string id = 1;
+  string name = 2;
+  string ship_name = 3;
+  string affiliation = 4;
+}
+message GetCrewRequest { string id = 1; }
+message ListCrewsRequest {}
+message CrewResponse { Crew crew = 1; }
+message ListCrewsResponse { repeated Crew crews = 1; }
+
+message DevilFruitRequest {
+  string id = 1;
+  string name = 2;
+  DevilFruitType type = 3;
+  string description = 4;
+}
+message GetDevilFruitRequest { string id = 1; }
+message ListDevilFruitsRequest {}
+message DevilFruitResponse { DevilFruit fruit = 1; }
+message ListDevilFruitsResponse { repeated DevilFruit fruits = 1; }
